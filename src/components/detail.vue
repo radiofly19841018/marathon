@@ -404,6 +404,7 @@
         </div>
       </div>
     </form>
+
     <div class="partner-list" v-for="(user, index) of userData" :key="'user' + index" v-show="pageType === 1">
       <div>
         <span class="partner-list-inner list-inner-name">{{user.trueName}}</span>
@@ -412,6 +413,7 @@
       </div>
       <span class="icon-cir" @click="delUser(index)">&#45;</span>
     </div>
+
     <div class="add-partner" v-show="pageType === 1" @click="toAddUser">
       <span class="icon-cir icon-p-right">&#43;</span>添加同行人员
     </div>
