@@ -70,7 +70,7 @@ export default {
   },
   created () {
     this.$root.$on('changeTitle', this.changeTitle)
-    this.wxConfig()
+    // this.wxConfig()
   }
 }
 </script>
