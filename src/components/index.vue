@@ -177,8 +177,8 @@ export default {
   beforeRouteEnter (to, from, next) {
     next(vm => {
       vm.$root.$emit('changeTitle', '行动力 游城市')
-      if (to.query && (to.query.userType === '0' || to.query.userType === 0)) {
-        vm.$router.push({
+      if (window.location.href.indexOf('userType=0') !== -1) {
+        vm.$router.replace({
           name: 'detail',
           query: {
             userType: 0

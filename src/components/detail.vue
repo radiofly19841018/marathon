@@ -337,7 +337,7 @@
           </div>:
         </div>
         <div class="input-box">
-          <input class="form-input" type="text" placeholder="请填写您的手机号码" v-model="listTel" maxlength="18">
+          <input class="form-input" type="tel" placeholder="请填写您的手机号码" v-model="listTel" maxlength="18">
         </div>
       </div>
 
@@ -582,20 +582,24 @@ export default {
     },
     addSubmit () {
       if (this.listName && this.listTel && this.listTown && this.listStreet && this.listPosition) {
-        this.pageType = 1
-        let _userData = {
-          trueName: this.listName,
-          sex: this.listSex,
-          tel: this.listTel,
-          isIll: this.listIsIll,
-          town: this.listTown,
-          street: this.listStreet,
-          position: this.listPosition,
-          age: this.listAge
+        if (/^1[0-9]{10}$/.test(this.listTel)) {
+          this.pageType = 1
+          let _userData = {
+            trueName: this.listName,
+            sex: this.listSex,
+            tel: this.listTel,
+            isIll: this.listIsIll,
+            town: this.listTown,
+            street: this.listStreet,
+            position: this.listPosition,
+            age: this.listAge
+          }
+          this.userData.push(_userData)
+          this.recoveryMyData()
+          this.$root.$emit('changeTitle', '填写信息')
+        } else {
+          alert('电话号码有误，请重新输入')
         }
-        this.userData.push(_userData)
-        this.recoveryMyData()
-        this.$root.$emit('changeTitle', '填写信息')
       } else {
         this.errMsg()
       }
@@ -606,7 +610,11 @@ export default {
     pageSubmit () {
       this.saveMyData()
       if (this.myData.trueName && this.myData.tel && this.myData.town && this.myData.street && this.myData.position) {
-        this.postData()
+        if (/^1[0-9]{10}$/.test(this.listTel)) {
+          this.postData()
+        } else {
+          alert('电话号码有误，请重新输入')
+        }
       } else {
         this.errMsg()
       }
@@ -668,7 +676,7 @@ export default {
   beforeRouteEnter (to, from, next) {
     next(vm => {
       vm.$root.$emit('changeTitle', '填写信息')
-      if (to.query && (to.query.userType === '0' || to.query.userType === 0)) {
+      if (window.location.href.indexOf('userType=0') !== -1) {
         vm.success = true
       }
     })
