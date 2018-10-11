@@ -96,7 +96,7 @@
   .note-btn{
     margin: 45px auto 0;
     width: 70%;
-    background:#d3007f;
+    background-color:#dddddd;
     border-radius:25px;
     height:50px;
     line-height: 50px;
@@ -104,8 +104,10 @@
     text-align: center;
     font-family:PingFangSC-Regular;
     font-size:18px;
-    color:#ffffff;
     font-weight: 100;
+  }
+  .note-btn.active{
+    background-color:#d3007f;
   }
   .note-time{
     margin-right: 1em;
@@ -131,7 +133,7 @@
           <div class="note-detail">4、本次活动最终解释权归【惠氏制药有限公司】所有。</div>
           <img class="note-img" src="../assets/note-bg.png" alt="">
         </div>
-        <div class="note-btn">
+        <div class="note-btn" :class="{active: nextPage}">
           <span class="note-time" v-show="countdown !== 0">{{countdown}}S</span><span @click="goNextPage">确认</span>
         </div>
       </div>
