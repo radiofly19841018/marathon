@@ -598,7 +598,7 @@ export default {
           this.recoveryMyData()
           this.$root.$emit('changeTitle', '填写信息')
         } else {
-          alert('电话号码有误，请重新输入')
+          this.$root.$emit('showMsg', '电话号码有误，请重新输入')
         }
       } else {
         this.errMsg()
@@ -613,7 +613,7 @@ export default {
         if (/^1[0-9]{10}$/.test(this.listTel)) {
           this.postData()
         } else {
-          alert('电话号码有误，请重新输入')
+          this.$root.$emit('showMsg', '电话号码有误，请重新输入')
         }
       } else {
         this.errMsg()
@@ -627,19 +627,19 @@ export default {
         if (res.data.status === 'success') {
           this.showSuccess()
         } else if (res.data.status === 'error') {
-          alert(res.data.msg)
+          this.$root.$emit('showMsg', res.data.msg)
         } else if (res.data.status === 'timeout') {
           window.location.href = res.data.url
         }
       }).catch(res => {
-        alert('网络繁忙')
+        this.$root.$emit('showMsg', '网络繁忙')
       })
     },
     showSuccess () {
       this.success = true
     },
     errMsg () {
-      alert('请填写完整信息')
+      this.$root.$emit('showMsg', '请填写完整信息')
     },
     closeWindow () {
       try {
