@@ -4,7 +4,7 @@
     height: 100%;
     width: 100%;
     background-color: #5aafd6;
-    background-image: url('../assets/index-bg.png');
+    background-image: url('../assets/index-bg.jpg');
     background-position: bottom left;
     background-size: 100% auto;
     background-repeat: no-repeat;
@@ -18,7 +18,7 @@
   }
   .info-img-1{
     margin-bottom: 20px;
-    width: 40%;
+    width: 56%;
   }
   .info-img-2{
     width: 75%;
@@ -142,6 +142,7 @@
 </template>
 
 <script>
+/* globals wx:false */
 export default {
   name: 'index',
   data () {
@@ -172,10 +173,61 @@ export default {
           name: 'detail'
         })
       }
+    },
+    wxConfig () {
+      let url = 'http://wx.gc121.com/index.php?g=Api&m=Weixin&a=getJsApiSignBundle'
+      let shareTitle = '行动力，游城市 | 钙尔奇邀您一起成为“行动力达人”'
+      let shareLink = 'http://sites.gc121.com/xdl/admin/index.php?g=Api&m=Index&a=index'
+      let shareDes = '描述：点击免费报名参加'
+      let shareLogoUrl = 'http://sites.gc121.com/xdl/view/static/img/index-logo.15fe4ca.png'
+      let href = window.location.href
+      this.$http.get(url, {
+        params: {
+          'token': 'weistreet',
+          'url': href
+        }
+      }).then((res) => {
+        if (res.data.status === 'success') {
+          wx.config({
+            debug: false,
+            appId: res.data.appId,
+            timestamp: res.data.timestamp,
+            nonceStr: res.data.nonceStr,
+            signature: res.data.signature,
+            jsApiList: [
+              'onMenuShareTimeline',
+              'onMenuShareAppMessage',
+              'getLocation',
+              'openLocation'
+            ]
+          })
+          wx.ready(function () {
+            // 自定义分享内容
+            wx.onMenuShareTimeline({
+              title: shareDes, // 分享标题
+              link: shareLink, // 分享链接
+              imgUrl: shareLogoUrl, // 分享图标
+              success: (res) => {
+              },
+              cancel: (res) => {
+              }
+            })
+            wx.onMenuShareAppMessage({
+              title: shareTitle,
+              desc: shareDes,
+              link: shareLink,
+              imgUrl: shareLogoUrl,
+              success: (res) => {},
+              cancel: (res) => {}
+            })
+          })
+        }
+      })
     }
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
+      vm.wxConfig()
       vm.$root.$emit('changeTitle', '行动力 游城市')
       if (window.location.href.indexOf('userType=0') !== -1) {
         vm.$router.replace({
