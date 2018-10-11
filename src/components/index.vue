@@ -74,17 +74,17 @@
   }
   .note-title-text{
     position: relative;
-    top: -10px;
+    top: -12px;
     padding: 0 0.7em;
     font-family:PingFangSC-Medium;
-    font-size:16px;
+    font-size:18px;
     color:#333333;
     background: #ffffff;
   }
   .note-detail{
     padding: 0 15px;
     font-family:PingFangSC-Light;
-    font-size:12px;
+    font-size:16px;
     color:#333333;
   }
   .note-img{
