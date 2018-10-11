@@ -611,7 +611,7 @@ export default {
       }
     },
     postData () {
-      this.$http.post('http://sites.xy1212.com/xdl/admin/index.php?g=Api&m=Index&a=reg', {
+      this.$http.post('http://sites.gc121.com/xdl/admin/index.php?g=Api&m=Index&a=reg', {
         myData: this.myData,
         userData: this.userData
       }).then(res => {
