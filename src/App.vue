@@ -21,54 +21,56 @@ export default {
       document.body.appendChild(i)
     },
     wxConfig () {
-      let url = 'http://wx.gc121.com/index.php?g=Api&m=Weixin&a=getJsApiSignBundle'
-      let href = window.location.href
-      this.$http.get(url, {
-        params: {
-          'token': 'weistreet',
-          'url': href
-        }
-      }).then((data) => {
-        if (data.status === 'success') {
-          wx.config({
-            debug: false,
-            appId: data.data.appId,
-            timestamp: data.data.timestamp,
-            nonceStr: data.data.nonceStr,
-            signature: data.data.signature,
-            jsApiList: [
-              'onMenuShareTimeline',
-              'onMenuShareAppMessage',
-              'getLocation',
-              'openLocation'
-            ]
-          })
-          // wx.ready(function() {
-          //   //自定义分享内容
-          //   wx.onMenuShareTimeline({
-          //     title: shareDes, // 分享标题
-          //     link: shareLink, // 分享链接
-          //     imgUrl: shareLogoUrl, // 分享图标
-          //     success: (res) => {
-          //     },
-          //     cancel: (res) => {
-          //     }
-          //   })
-          //   wx.onMenuShareAppMessage({
-          //     title: shareTitle,
-          //     desc: shareDes,
-          //     link: shareLink,
-          //     imgUrl: shareLogoUrl,
-          //     success: (res) => {},
-          //     cancel: (res) => {}
-          //   })
-          // })
-        }
-      })
+      console.log(wx)
+      // let url = 'http://wx.gc121.com/index.php?g=Api&m=Weixin&a=getJsApiSignBundle'
+      // let href = window.location.href
+      // this.$http.get(url, {
+      //   params: {
+      //     'token': 'weistreet',
+      //     'url': href
+      //   }
+      // }).then((data) => {
+      //   if (data.status === 'success') {
+      //     wx.config({
+      //       debug: false,
+      //       appId: data.data.appId,
+      //       timestamp: data.data.timestamp,
+      //       nonceStr: data.data.nonceStr,
+      //       signature: data.data.signature,
+      //       jsApiList: [
+      //         'onMenuShareTimeline',
+      //         'onMenuShareAppMessage',
+      //         'getLocation',
+      //         'openLocation'
+      //       ]
+      //     })
+      //     wx.ready(function() {
+      //       //自定义分享内容
+      //       wx.onMenuShareTimeline({
+      //         title: shareDes, // 分享标题
+      //         link: shareLink, // 分享链接
+      //         imgUrl: shareLogoUrl, // 分享图标
+      //         success: (res) => {
+      //         },
+      //         cancel: (res) => {
+      //         }
+      //       })
+      //       wx.onMenuShareAppMessage({
+      //         title: shareTitle,
+      //         desc: shareDes,
+      //         link: shareLink,
+      //         imgUrl: shareLogoUrl,
+      //         success: (res) => {},
+      //         cancel: (res) => {}
+      //       })
+      //     })
+      //   }
+      // })
     }
   },
   created () {
     this.$root.$on('changeTitle', this.changeTitle)
+    this.wxConfig()
   }
 }
 </script>
