@@ -7,6 +7,11 @@
 <script>
 export default {
   name: 'App',
+  data () {
+    return {
+      userType: false
+    }
+  },
   methods: {
     changeTitle (name) {
       var i = document.createElement('iframe')
@@ -22,6 +27,12 @@ export default {
   },
   created () {
     this.$root.$on('changeTitle', this.changeTitle)
+    this.userType = window.location.href.indexOf("userType=0") !== -1
+    if(this.userType) {
+      this.$router.replace({
+        name: 'detail'
+      })
+    }
   }
 }
 </script>
