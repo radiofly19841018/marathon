@@ -395,8 +395,8 @@
           <div class="form-input" @click="checkShowList(4)">
             {{listPosition | formatPosition}}
             <div class="icon-down"></div>
-            <div class="form-input-list" v-show="showList === 4" v-for="(city, index) of cityList" :key="'position' + index" v-if="city.town === listTown">
-              <div class="list-row" v-for="position of city.position" :key="position" @click.stop="checkPosition(position)">
+            <div class="form-input-list" v-show="showList === 4">
+              <div class="list-row" v-for="position of positionList" :key="position" @click.stop="checkPosition(position)">
                 {{position}}
               </div>
             </div>
@@ -435,7 +435,7 @@
           恭喜您，报名成功！
         </div>
         <div class="note-btn">
-          <span @click="makeSure">确&nbsp;&nbsp;认</span>
+          <span @click="success = false">确&nbsp;&nbsp;认</span>
         </div>
         <img class="note-inner-img note-img-2" src="../assets/note-bg.png" alt="">
       </div>
@@ -470,7 +470,12 @@ export default {
         position: '',
         age: 1 // 1:40岁以下，2:40-55岁，3:55-65岁
       },
-      userData: []
+      userData: [],
+      positionList: [
+        '111',
+        '222',
+        '333'
+      ]
     }
   },
   watch: {
@@ -553,7 +558,7 @@ export default {
       this.$root.$emit('changeTitle', '填写信息')
     },
     addSubmit () {
-      if (this.listName && this.listTel) {
+      if (this.listName && this.listTel && this.listTown && this.listStreet && this.listPosition) {
         this.pageType = 1
         let _userData = {
           trueName: this.listName,
@@ -568,6 +573,8 @@ export default {
         this.userData.push(_userData)
         this.recoveryMyData()
         this.$root.$emit('changeTitle', '填写信息')
+      } else {
+        this.errMsg()
       }
     },
     delUser (val) {
@@ -577,23 +584,31 @@ export default {
       this.saveMyData()
       if (this.myData.trueName && this.myData.tel && this.myData.town && this.myData.street && this.myData.position) {
         this.postData()
+      } else {
+        this.errMsg()
       }
     },
     postData () {
-      this.$http.post('lalala.do', {
+      this.$http.post('http://sites.xy1212.com/xdl/admin/index.php?g=Api&m=Index&a=reg', {
         myData: this.myData,
         userData: this.userData
       }).then(res => {
-        this.showSuccess()
+        if (res.data.status === 'success') {
+          this.showSuccess()
+        } else if (res.data.status === 'error') {
+          alert(res.data.msg)
+        } else if (res.data.status === 'timeout') {
+          window.location.href = res.data.url
+        }
       }).catch(res => {
-        console.log(233)
+        alert('网络繁忙')
       })
     },
     showSuccess () {
       this.success = true
     },
-    makeSure () {
-
+    errMsg () {
+      alert('请填写完整信息')
     }
   },
   filters: {

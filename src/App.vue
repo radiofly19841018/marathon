@@ -27,8 +27,8 @@ export default {
   },
   created () {
     this.$root.$on('changeTitle', this.changeTitle)
-    this.userType = window.location.href.indexOf("userType=0") !== -1
-    if(this.userType) {
+    this.userType = window.location.href.indexOf('userType=0') !== -1
+    if (this.userType) {
       this.$router.replace({
         name: 'detail'
       })
