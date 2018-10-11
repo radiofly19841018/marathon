@@ -438,7 +438,7 @@
           恭喜您，报名成功！
         </div>
         <div class="note-btn">
-          <span @click="success = false">确&nbsp;&nbsp;认</span>
+          <span @click="closeWindow">确&nbsp;&nbsp;认</span>
         </div>
         <img class="note-inner-img note-img-2" src="../assets/note-bg.png" alt="">
       </div>
@@ -447,6 +447,7 @@
 </template>
 
 <script>
+/* globals wx:false */
 export default {
   name: 'detail',
   data () {
@@ -631,7 +632,59 @@ export default {
     },
     errMsg () {
       alert('请填写完整信息')
+    },
+    closeWindow () {
+      try {
+        wx.closeWindow()
+      } catch (e) {}
     }
+    // wxConfig () {
+    //   let url = 'http://wx.gc121.com/index.php?g=Api&m=Weixin&a=getJsApiSignBundle'
+    //   let href = window.location.href
+    //   console.log(WeixinJSBridge)
+    //   this.$http.get(url, {
+    //     params: {
+    //       'token': 'weistreet',
+    //       'url': href
+    //     }
+    //   }).then((data) => {
+    //     if (data.status === 'success') {
+    //       wx.config({
+    //         debug: false,
+    //         appId: data.data.appId,
+    //         timestamp: data.data.timestamp,
+    //         nonceStr: data.data.nonceStr,
+    //         signature: data.data.signature,
+    //         jsApiList: [
+    //           'onMenuShareTimeline',
+    //           'onMenuShareAppMessage',
+    //           'getLocation',
+    //           'openLocation'
+    //         ]
+    //       })
+    //       // wx.ready(function() {
+    //       //   //自定义分享内容
+    //       //   wx.onMenuShareTimeline({
+    //       //     title: shareDes, // 分享标题
+    //       //     link: shareLink, // 分享链接
+    //       //     imgUrl: shareLogoUrl, // 分享图标
+    //       //     success: (res) => {
+    //       //     },
+    //       //     cancel: (res) => {
+    //       //     }
+    //       //   })
+    //       //   wx.onMenuShareAppMessage({
+    //       //     title: shareTitle,
+    //       //     desc: shareDes,
+    //       //     link: shareLink,
+    //       //     imgUrl: shareLogoUrl,
+    //       //     success: (res) => {},
+    //       //     cancel: (res) => {}
+    //       //   })
+    //       // })
+    //     }
+    //   })
+    // }
   },
   filters: {
     formatAge (val) {
@@ -658,8 +711,13 @@ export default {
       }
     }
   },
-  mounted () {
-    this.$root.$emit('changeTitle', '填写信息')
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.$root.$emit('changeTitle', '填写信息')
+      if (to.query && (to.query.userType === '0' || to.query.userType === 0)) {
+        vm.success = true
+      }
+    })
   }
 }
 </script>
