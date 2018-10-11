@@ -193,6 +193,9 @@
     height: 38px;
     line-height:38px;
     text-align: center;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
   }
   .list-inner-name{
     width: 5em;
@@ -281,7 +284,7 @@
           </div>:
         </div>
         <div class="input-box">
-          <input class="form-input" type="text" placeholder="请填写您的姓名" v-model="listName">
+          <input class="form-input" type="text" placeholder="请填写您的姓名" v-model="listName" maxlength="7">
         </div>
       </div>
 
@@ -334,7 +337,7 @@
           </div>:
         </div>
         <div class="input-box">
-          <input class="form-input" type="text" placeholder="请填写您的手机号码" v-model="listTel">
+          <input class="form-input" type="text" placeholder="请填写您的手机号码" v-model="listTel" maxlength="18">
         </div>
       </div>
 
@@ -448,6 +451,7 @@ export default {
   name: 'detail',
   data () {
     return {
+      clickEvn: false,
       success: false,
       pageType: 1,
       cityList: require('../assets/address.json'),
@@ -480,14 +484,16 @@ export default {
   },
   watch: {
     listTown (newVal, oldVal) {
-      if (oldVal !== newVal) {
+      if (this.clickEvn && oldVal !== newVal) {
         this.listStreet = ''
         this.listPosition = ''
+        this.clickEvn = false
       }
     },
     listStreet (newVal, oldVal) {
-      if (oldVal !== newVal) {
+      if (this.clickEvn && oldVal !== newVal) {
         this.listPosition = ''
+        this.clickEvn = false
       }
     }
   },
@@ -504,10 +510,12 @@ export default {
       }
     },
     checkTown (town) {
+      this.clickEvn = true
       this.listTown = town
       this.showList = 3
     },
     checkStreet (street) {
+      this.clickEvn = true
       this.listStreet = street
       this.showList = 4
     },
@@ -546,10 +554,24 @@ export default {
       this.listPosition = this.myData.position
       this.listAge = this.myData.age
     },
+    addUserData () {
+      this.listName = this.userData[this.userData.length - 1].trueName
+      this.listSex = this.userData[this.userData.length - 1].sex
+      this.listTel = this.userData[this.userData.length - 1].tel
+      this.listIsIll = this.userData[this.userData.length - 1].isIll
+      this.listTown = this.userData[this.userData.length - 1].town
+      this.listStreet = this.userData[this.userData.length - 1].street
+      this.listPosition = this.userData[this.userData.length - 1].position
+      this.listAge = this.userData[this.userData.length - 1].age
+    },
     toAddUser () {
       this.saveMyData()
       this.pageType = 0
-      this.resetData()
+      if (this.userData.length > 0) {
+        this.addUserData()
+      } else {
+        this.resetData()
+      }
       this.$root.$emit('changeTitle', '随行人员信息')
     },
     addCancel () {
