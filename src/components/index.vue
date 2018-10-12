@@ -10,7 +10,7 @@
     background-repeat: no-repeat;
   }
   .top-info{
-    padding-top: 12%;
+    padding-top: 8%;
   }
   .top-info-img{
     display: block;
@@ -18,7 +18,7 @@
   }
   .info-img-1{
     margin-bottom: 20px;
-    width: 74%;
+    width: 66%;
   }
   .info-img-2{
     width: 75%;
