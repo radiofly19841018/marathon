@@ -10,7 +10,7 @@
     background-repeat: no-repeat;
   }
   .top-info{
-    padding-top: 7%;
+    padding-top: 12%;
   }
   .top-info-img{
     display: block;
@@ -18,7 +18,7 @@
   }
   .info-img-1{
     margin-bottom: 20px;
-    width: 56%;
+    width: 74%;
   }
   .info-img-2{
     width: 75%;
@@ -118,7 +118,6 @@
   <div id="page-index">
     <div class="top-info">
       <img class="top-info-img info-img-1" src="../assets/index-logo.png" alt="">
-      <img class="top-info-img info-img-2" src="../assets/index-title.png" alt="">
     </div>
     <div class="bottom-btn-box" @click="showNotePage">
       我要报名
@@ -179,7 +178,7 @@ export default {
       let shareTitle = '行动力，游城市 | 钙尔奇邀您一起成为“行动力达人”'
       let shareLink = 'http://sites.gc121.com/xdl/admin/index.php?g=Api&m=Index&a=index'
       let shareDes = '描述：点击免费报名参加'
-      let shareLogoUrl = 'http://sites.gc121.com/xdl/view/static/img/index-logo.15fe4ca.png'
+      let shareLogoUrl = 'http://sites.gc121.com/xdl/view/src/assets/share_logo.png'
       let href = window.location.href
       this.$http.get(url, {
         params: {
@@ -188,12 +187,13 @@ export default {
         }
       }).then((res) => {
         if (res.data.status === 'success') {
+          console.log(res.data.data.signature)
           wx.config({
             debug: false,
-            appId: res.data.appId,
-            timestamp: res.data.timestamp,
-            nonceStr: res.data.nonceStr,
-            signature: res.data.signature,
+            appId: res.data.data.appId,
+            timestamp: res.data.data.timestamp,
+            nonceStr: res.data.data.nonceStr,
+            signature: res.data.data.signature,
             jsApiList: [
               'onMenuShareTimeline',
               'onMenuShareAppMessage',
@@ -202,23 +202,16 @@ export default {
             ]
           })
           wx.ready(function () {
-            // 自定义分享内容
             wx.onMenuShareTimeline({
-              title: shareDes, // 分享标题
-              link: shareLink, // 分享链接
-              imgUrl: shareLogoUrl, // 分享图标
-              success: (res) => {
-              },
-              cancel: (res) => {
-              }
+              title: shareDes,
+              link: shareLink,
+              imgUrl: shareLogoUrl
             })
             wx.onMenuShareAppMessage({
               title: shareTitle,
               desc: shareDes,
               link: shareLink,
-              imgUrl: shareLogoUrl,
-              success: (res) => {},
-              cancel: (res) => {}
+              imgUrl: shareLogoUrl
             })
           })
         }
